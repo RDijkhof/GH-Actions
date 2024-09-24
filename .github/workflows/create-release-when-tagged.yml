@@ -3,7 +3,9 @@ name: Create Release
 on:
   push:
     tags:
-      - 'V*'  # This triggers the workflow for version tags like v1.0, v2.1, etc.
+      - 'V*'  # This triggers the workflow for version tags like V1.0, V2.1, etc.
+      - 'P*'  # This triggers the workflow for version tags like P1.0, P2.1, etc. 
+
 
 permissions:
   contents: write  # Allows writing to the repository contents
