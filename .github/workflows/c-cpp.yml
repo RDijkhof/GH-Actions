@@ -29,22 +29,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}  # This will still create the name as is
-          files: main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-      - name: Format Release Name
-        run: |
-          VERSION=${GITHUB_REF##*/}
-          echo "Formatted Release Name: Release $VERSION" >> $GITHUB_ENV
-          
-      - name: Create Release with Formatted Name
-        id: create_release_formatted
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref }}
-          name: ${{ env.VERSION }}  # Use the formatted release name
+          name: Release ${{ github.ref_name }}  # Use github.ref_name to get just the tag name
           files: main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
