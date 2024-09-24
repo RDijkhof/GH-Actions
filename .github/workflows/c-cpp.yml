@@ -1,25 +1,31 @@
-name: C/C++ CI
+name: Create Release
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    tags:
+      - 'v*'  # This triggers the workflow for version tags like v1.0, v2.1, etc.
 
 jobs:
-  build:
-
+  create_release:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Generate configure script
-      run: autoreconf -i
-    - name: Configure
-      run: ./configure
-    - name: Build
-      run: make
-    - name: Run tests
-      run: make check
-    - name: Create distribution
-      run: make distcheck
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up C Compiler
+        run: sudo apt-get install build-essential
+
+      - name: Build the project
+        run: |
+          gcc -o hello hello.c  # Replace hello.c with your file name if it's different.
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          files: hello
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
