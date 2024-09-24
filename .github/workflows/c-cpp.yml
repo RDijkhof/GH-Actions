@@ -18,7 +18,7 @@ jobs:
 
       - name: Build the project
         run: |
-          gcc -o hello hello.c  # Replace hello.c with your file name if it's different.
+          gcc -o main main.c  # Replace hello.c with your file name if it's different.
 
       - name: Create Release
         id: create_release
@@ -26,6 +26,6 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          files: hello
+          files: main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
