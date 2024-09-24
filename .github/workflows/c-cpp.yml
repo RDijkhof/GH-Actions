@@ -3,7 +3,7 @@ name: Create Release
 on:
   push:
     tags:
-      - 'v*'  # This triggers the workflow for version tags like v1.0, v2.1, etc.
+      - 'V*'  # This triggers the workflow for version tags like v1.0, v2.1, etc.
 
 permissions:
   contents: write  # Allows writing to the repository contents
@@ -22,14 +22,29 @@ jobs:
 
       - name: Build the project
         run: |
-          gcc -o main main.c  # Replace hello.c with your file name if it's different.
+          gcc -o main main.c  
 
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
+          name: Release ${{ github.ref }}  # This will still create the name as is
+          files: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Format Release Name
+        run: |
+          VERSION=${GITHUB_REF##*/}
+          echo "Formatted Release Name: Release $VERSION" >> $GITHUB_ENV
+          
+      - name: Create Release with Formatted Name
+        id: create_release_formatted
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          name: ${{ env.VERSION }}  # Use the formatted release name
           files: main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
