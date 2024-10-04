@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   create_release:
-    runs-on: linux
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
